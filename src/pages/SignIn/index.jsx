@@ -4,15 +4,15 @@ import { Link } from 'react-router-dom'
 
 import {Input} from '../../components/Input';
 import {Button} from '../../components/Button';
-import { MyContext } from '../../myContext';
+import { useAuth } from '../../hooks/auth';
 
 
 
 import { Container ,Form ,Background} from './styles';
 
 export function SignIn () {
-    const data = useContext(MyContext);
-    console.log("Meu context =>",data);
+    const data = useAuth();
+    console.log('my context =>',data);
 
     return(
         <Container>
