@@ -32,12 +32,32 @@ function AuthProvider ({children}) {
     
     }
 
-    function signOut(){
+    function signOut() {
         localStorage.removeItem("@rocketNotes:token");
         localStorage.removeItem("@rocketNotes:user");
 
         setData({});
 
+    }
+
+    async function updateProfile({user}) {
+        try{    
+            await api.put("/users",user);
+            localStorage.setItem("@rocketNotes:user",JSON.stringify(user))
+            setData({
+                    user,
+                    token:data.token
+                })
+
+                alert("Perfil Atualizado!")
+
+        } catch(error) {
+            if(error.response) {
+                alert(error.response.data.message);
+            } else {
+                alert("Não foi possível atualizar o perfil.");
+            }
+        }
     }
 
     useEffect(()=>{
@@ -59,8 +79,10 @@ function AuthProvider ({children}) {
     return(
         <AuthContext.Provider value = {{ 
             signIn,
+            signOut,
+            updateProfile, 
             user: data.user,
-            signOut }}>
+            }}>
             {children}
         </AuthContext.Provider>
     );
