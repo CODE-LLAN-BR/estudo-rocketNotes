@@ -40,8 +40,18 @@ function AuthProvider ({children}) {
 
     }
 
-    async function updateProfile({user}) {
+    async function updateProfile({ user ,avatarFile }) {
         try{    
+
+            if(avatarFile) {
+                const fileUploadForm = new FormData();
+                fileUploadForm.append("avatar", avatarFile);
+
+                const response = await api.patch("/users/avatar",fileUploadForm);
+
+                user.avatar = response.data.avatar;
+            }
+            
             await api.put("/users",user);
             localStorage.setItem("@rocketNotes:user",JSON.stringify(user))
             setData({
